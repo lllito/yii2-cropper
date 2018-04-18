@@ -1,7 +1,6 @@
 <?php
 
 namespace lito\cropper;
-
 use lito\cropper\assets\CropperAsset;
 use yii\base\InvalidConfigException;
 use yii\helpers\Json;
@@ -23,7 +22,6 @@ class Widget extends InputWidget
     public $cropAreaHeight = 300;
     public $extensions = 'jpeg, jpg, png, gif';
     public $onCompleteJcrop;
-
     /**
      * @inheritdoc
      */
