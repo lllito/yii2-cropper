@@ -20,22 +20,28 @@
                 init: function () {
                     cropper.reader = new FileReader();
                     cropper.reader.onload = function (e) {
-                        cropper.clearOldImg();
 
-                        cropper.$new_photo_area.append('<img src="' + e.target.result + '">');
+                        cropper.clearOldImg();
+                        cropper.$new_photo_area.html('<img  src="' + e.target.result + '">');
                         cropper.$img = cropper.$new_photo_area.find('img');
 
-                        var x1 = (cropper.$img.width() - width) / 2;
-                        var y1 = (cropper.$img.height() - height) / 2;
-                        var x2 = x1 + width;
-                        var y2 = y1 + height;
+                        var image = new Image();
+                        image.src = e.target.result;
 
-                        cropper.$img.Jcrop({
-                            aspectRatio: width / height,
-                            setSelect: [x1, y1, x2, y2],
-                            boxWidth: cropper.$new_photo_area.width(),
-                            boxHeight: cropper.$new_photo_area.height()
-                        });
+                        image.onload = function() {
+                            var x1 = (this.width - width) / 2;
+                            var y1 = (this.height - height) / 2;
+                            var x2 = x1 + width;
+                            var y2 = y1 + height;
+
+                            cropper.$img.Jcrop({
+                                aspectRatio: width / height,
+                                setSelect: [x1, y1, x2, y2],
+                                boxWidth: cropper.$new_photo_area.width(),
+                                boxHeight: cropper.$new_photo_area.height(),
+                                keySupport: false
+                            });
+                        };
 
                         cropper.setProgress(0);
                     };
@@ -54,6 +60,7 @@
                                 cropper.selectedFile = null;
                                 cropper.uploader._queue = [];
                             }
+
                             return true;
                         },
                         onSubmit: function () {
@@ -61,7 +68,6 @@
                                 return true;
                             }
                             cropper.selectedFile = cropper.uploader._queue[0];
-
                             cropper.setProgress(55);
                             cropper.showError('');
                             cropper.reader.readAsDataURL(this._queue[0].file);
@@ -76,7 +82,16 @@
                             cropper.showError('');
 
                             cropper.$thumbnail.attr({'src': response['filelink']});
+
+
+                            cropper.$new_photo_area.html('<img class="thumbnail" style="max-width: 100%;max-height:100%;"  src="' + response['filelink'] + '">');
+                            cropper.$cropper_buttons.find('.crop-photo').addClass('hidden');
+
                             cropper.$photo_field.val(response['filelink']);
+                            if ((typeof options.onCompleteJcrop !== "undefined") && (typeof options.onCompleteJcrop === "string")) {                                
+                            	eval('var onCompleteJcrop = ' + options.onCompleteJcrop);
+                                onCompleteJcrop(filename, response);
+                            }
                         },
                         onSizeError: function () {
                             cropper.showError(options['size_error_text']);
@@ -99,6 +114,8 @@
                             data[yii.getCsrfParam()] = yii.getCsrfToken();
                             data['width'] = cropper.$width_input.val();
                             data['height'] = cropper.$height_input.val();
+
+
 
                             if (cropper.uploader._queue.length) {
                                 cropper.selectedFile = cropper.uploader._queue[0];
@@ -138,7 +155,10 @@
                 },
                 clearOldImg: function () {
                     if (cropper.$img) {
-                        cropper.$img.data('Jcrop').destroy();
+                        if(cropper.$img.data('Jcrop'))
+                        {
+                            cropper.$img.data('Jcrop').destroy();
+                        }
                         cropper.$img.remove();
                         cropper.$img = null;
                     }
