@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist budyaga/yii2-cropper "*"
+php composer.phar require --prefer-dist lito/yii2-cropper "*"
 ```
 
 or add
 
 ```
-"budyaga/yii2-cropper": "*"
+"lito/yii2-cropper": "*"
 ```
 
 to the require section of your `composer.json` file.
@@ -31,7 +31,7 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```
-use budyaga\cropper\Widget;
+use lito\cropper\Widget;
 ```
 
 
@@ -68,7 +68,7 @@ public function actions()
 {
     return [
         'uploadPhoto' => [
-            'class' => 'budyaga\cropper\actions\UploadAction',
+            'class' => 'lito\cropper\actions\UploadAction',
             'url' => 'http://your_domain.com/uploads/user/photo',
             'path' => '@frontend/web/uploads/user/photo',
         ]
