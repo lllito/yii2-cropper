@@ -1,6 +1,6 @@
 <?php
 
-namespace budyaga\cropper\assets;
+namespace lito\cropper\assets;
 
 use yii\web\AssetBundle;
 
@@ -33,7 +33,7 @@ class CropperAsset extends AssetBundle
      */
     public $depends = [
         'yii\web\JqueryAsset',
-        'budyaga\cropper\assets\JcropAsset',
-        'budyaga\cropper\assets\SimpleAjaxUploaderAsset',
+        'lito\cropper\assets\JcropAsset',
+        'lito\cropper\assets\SimpleAjaxUploaderAsset',
     ];
 }
