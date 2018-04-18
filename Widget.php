@@ -47,7 +47,6 @@ class Widget extends InputWidget
     public function run()
     {
         $this->registerClientAssets();
-
         return $this->render('widget', [
             'model' => $this->model,
             'widget' => $this
